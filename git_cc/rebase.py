@@ -61,15 +61,14 @@ def doCommit(cs):
     branch = getCurrentBranch()
     if branch:
         git_exec(['checkout', CC_TAG])
-    try:
-        commit(cs)
-    finally:
-        if branch:
-            git_exec(['rebase', CI_TAG, CC_TAG])
-            git_exec(['rebase', CC_TAG, branch])
-        else:
-            git_exec(['branch', '-f', CC_TAG])
-        tag(CI_TAG, CC_TAG)
+
+    commit(cs)
+    if branch:
+        git_exec(['rebase', CI_TAG, CC_TAG])
+        git_exec(['rebase', CC_TAG, branch])
+    else:
+        git_exec(['branch', '-f', CC_TAG])
+    tag(CI_TAG, CC_TAG)
 
 def getSince():
     try:
@@ -218,16 +217,16 @@ class Changeset(object):
         mkdirs(toFile)
         removeFile(toFile)
         try:
-            cc_exec(['get','-to', toFile, cc_file(file, version)])
+            cc_exec(['get','-to', toFile.encode(ENCODING), cc_file(file.encode(ENCODING), version.encode(ENCODING))])
         except:
             if len(file) < 200:
                 raise
             debug("Ignoring %s as it may be related to https://github.com/charleso/git-cc/issues/9" % file)
         if not exists(toFile):
-            git_exec(['checkout', 'HEAD', toFile])
+            git_exec(['checkout', 'HEAD', toFile.encode(ENCODING)])
         else:
             os.chmod(toFile, os.stat(toFile).st_mode | stat.S_IWRITE)
-        git_exec(['add', '-f', file], errors=False)
+        git_exec(['add', '-f', file.encode(ENCODING)], errors=False)
 
 class Uncataloged(Changeset):
     def add(self, files):
@@ -240,14 +239,14 @@ class Uncataloged(Changeset):
             if sym >= 0:
                 continue
             if line.startswith('<'):
-                git_exec(['rm', '-r', getFile(line)], errors=False)
+                git_exec(['rm', '-r', getFile(line).encode(ENCODING)], errors=False)
                 cache.remove(getFile(line))
             elif line.startswith('>'):
                 added = getFile(line)
                 cc_added = join(CC_DIR, added)
                 if not exists(cc_added) or isdir(cc_added) or added in files:
                     continue
-                history = cc_exec(['lshistory', '-fmt', '%o%m|%Nd|%Vn\\n', added], errors=False)
+                history = cc_exec(['lshistory', '-fmt', '%o%m|%Nd|%Vn\\n', added.encode(ENCODING)], errors=False)
                 if not history:
                     continue
                 history = filter(None, history.split('\n'))
