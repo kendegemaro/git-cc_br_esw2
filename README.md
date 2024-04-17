@@ -2,6 +2,13 @@
 
 Simple bridge between base ClearCase or UCM and Git.
 
+## License information
+
+This fork of git-cc (https://github.com/charleso/git-cc) implements fixes for a 
+more reliable use of python encoding, which in return make git-cc functional (for me!).
+
+The following rest of the README is the original from git-cc.
+
 ## Warning
 
 I wrote this purely for fun and to see if I could stop use ClearCase at work
