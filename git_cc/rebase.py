@@ -82,8 +82,8 @@ def getSince():
 
 def getHistory(since):
     lsh = CC_LSH[:]
-    if since:
-        lsh.extend(['-since', since])
+    #  if since:
+    #    lsh.extend(['-since', since])
     lsh.extend(cfg.getInclude())
     return cc_exec(lsh)
 

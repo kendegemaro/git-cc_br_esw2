@@ -81,8 +81,9 @@ def cc_exec(cmd, **args):
 
 def popen(exe, cmd, cwd, env=None, decode=True, errors=True, encoding=None):
     cmd.insert(0, exe)
-    if DEBUG:
-        f = lambda a: a if not a.count(' ') else '"%s"' % a
+    # if DEBUG:
+        # f = lambda a: a if not a.count(' ') else '"%s"' % a
+        # debug('> ' + ' '.join(map(f, cmd)))
     pipe = Popen(cmd, cwd=cwd, stdout=PIPE, stderr=PIPE, env=env)
     (stdout, stderr) = pipe.communicate()
     if encoding == None:
