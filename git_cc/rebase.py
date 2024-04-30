@@ -235,7 +235,7 @@ class Changeset(object):
 class Uncataloged(Changeset):
     def add(self, files):
         dir = path(cc_file(self.file, self.version))
-        diff = cc_exec(['diff', '-diff_format', '-pred', dir], errors=False)
+        diff = cc_exec(['diff', '-diff_format', '-pred', dir.encode(ENCODING)], errors=False)
         def getFile(line):
             return join(self.file, line[2:max(line.find('  '), line.find(FS + ' '))])
         for line in diff.split('\n'):
