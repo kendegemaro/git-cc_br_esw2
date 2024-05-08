@@ -189,8 +189,12 @@ class Group:
         env['GIT_AUTHOR_NAME'] = env['GIT_COMMITTER_NAME'] = getUserName(user)
         env['GIT_AUTHOR_EMAIL'] = env['GIT_COMMITTER_EMAIL'] = str(getUserEmail(user))
         comment = self.comment if self.comment.strip() != "" else "<empty message>"
+        commitmsgfile = open('./.git/COMMIT_EDITMSG', 'w')
+        commitmsgfile.write(comment.encode(ENCODING))
+        commitmsgfile.close()
+        debug(comment.encode(ENCODING))
         try:
-            git_exec(['commit', '-m', comment.encode(ENCODING)], env=env)
+            git_exec(['commit', '-F', commitmsgfile.name], env=env)
         except Exception as e:
             if search('nothing( added)? to commit', e.args[0]) == None:
                 raise
@@ -231,7 +235,7 @@ class Changeset(object):
 class Uncataloged(Changeset):
     def add(self, files):
         dir = path(cc_file(self.file, self.version))
-        diff = cc_exec(['diff', '-diff_format', '-pred', dir], errors=False)
+        diff = cc_exec(['diff', '-diff_format', '-pred', dir.encode(ENCODING)], errors=False)
         def getFile(line):
             return join(self.file, line[2:max(line.find('  '), line.find(FS + ' '))])
         for line in diff.split('\n'):
@@ -252,7 +256,7 @@ class Uncataloged(Changeset):
                 history = filter(None, history.split('\n'))
                 all_versions = self.parse_history(history)
 
-                date = cc_exec(['describe', '-fmt', '%Nd', dir])
+                date = cc_exec(['describe', '-fmt', '%Nd', dir.encode(ENCODING)])
                 actual_versions = self.filter_versions(all_versions, lambda x: x[1] < date)
 
                 versions = self.checkin_versions(actual_versions)
