@@ -256,7 +256,7 @@ class Uncataloged(Changeset):
                 history = filter(None, history.split('\n'))
                 all_versions = self.parse_history(history)
 
-                date = cc_exec(['describe', '-fmt', '%Nd', dir])
+                date = cc_exec(['describe', '-fmt', '%Nd', dir.encode(ENCODING)])
                 actual_versions = self.filter_versions(all_versions, lambda x: x[1] < date)
 
                 versions = self.checkin_versions(actual_versions)
