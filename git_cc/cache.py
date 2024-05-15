@@ -51,7 +51,9 @@ class Cache(object):
             lines.append(file + '@@' + self.map[file].full)
         f = open(join(self.dir, self.file), 'w')
         try:
-            f.write('\n'.join(lines).encode(ENCODING))
+            f.write('\n')
+            for line in lines:
+              f.write(line)
             f.write('\n')
         finally:
             f.close()
