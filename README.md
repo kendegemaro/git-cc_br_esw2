@@ -1,13 +1,15 @@
 # git-cc
 
-Simple bridge between base ClearCase or UCM and Git.
+Simple bridge between base ClearCase or UCM and Git. Uses python 2.7.
 
-## License information
+## Fork License disclaimer
 
-This fork of git-cc (https://github.com/charleso/git-cc) implements fixes for a 
-more reliable use of python encoding, which in return make git-cc functional (for me!).
+This fork of [git-cc](https://github.com/charleso/git-cc) implements fixes for a 
+more reliable usage of python encoding, making git-cc functioning in return (for me!).
+It is licensed under the GNU GENERAL PUBLIC LICENSE - please refer to [LICENSE](https://github.com/kendegemaro/git-cc_br_esw2/blob/master/LICENSE) for
+more details.
 
-The following rest of the README is the original from git-cc.
+The following rest of the README is the original text from [git-cc](https://github.com/charleso/git-cc).
 
 ## Warning
 
