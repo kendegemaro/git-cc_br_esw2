@@ -8,6 +8,7 @@ from fnmatch import fnmatch
 from .clearcase import cc
 from .cache import getCache, CCFile
 from re import search
+import codecs
 
 """
 Things remaining:
@@ -36,7 +37,7 @@ def main(stash=False, dry_run=False, lshistory=False, load=None):
     since = getSince()
     cache.start()
     if load:
-        history = open(load, 'r').read().decode(ENCODING)
+        history = open(load, 'r').read()
     else:
         cc.rebase()
         history = getHistory(since)
@@ -189,10 +190,14 @@ class Group:
         env['GIT_AUTHOR_NAME'] = env['GIT_COMMITTER_NAME'] = getUserName(user)
         env['GIT_AUTHOR_EMAIL'] = env['GIT_COMMITTER_EMAIL'] = str(getUserEmail(user))
         comment = self.comment if self.comment.strip() != "" else "<empty message>"
-        commitmsgfile = open('./.git/COMMIT_EDITMSG', 'w')
-        commitmsgfile.write(comment.encode(ENCODING))
-        commitmsgfile.close()
-        debug(comment.encode(ENCODING))
+        try:
+          debug(comment.encode(ENCODING))
+        except:
+          debug("miscoded comment")
+        with open("./.git/COMMIT_EDITMSG", "wb") as commitmsgfile:
+          commitmsgfile.write(comment)
+          commitmsgfile.close()
+        
         try:
             git_exec(['commit', '-F', commitmsgfile.name], env=env)
         except Exception as e:

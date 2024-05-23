@@ -3,6 +3,7 @@ import imp
 import os
 import sys
 from os.path import join, exists, abspath, dirname
+from time import gmtime, strftime
 
 # In which package module SafeConfigParser is available and under what name
 # depends on the Python version
@@ -71,7 +72,7 @@ def doStash(f, stash):
 
 def debug(string):
     if DEBUG:
-        print(string)
+        print('[' + strftime("%H:%M:%S", gmtime()) + '] ' + string)
 
 def git_exec(cmd, **args):
     return popen('git', cmd, GIT_DIR, encoding='UTF-8', **args)

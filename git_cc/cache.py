@@ -4,9 +4,7 @@ from .common import *
 FILE = '.gitcc'
 
 def getCache():
-    if cfg.getCore('cache', True) == 'False':
-        return NoCache()
-    return Cache(GIT_DIR)
+    return NoCache()
 
 class Cache(object):
     def __init__(self, dir):
@@ -51,7 +49,9 @@ class Cache(object):
             lines.append(file + '@@' + self.map[file].full)
         f = open(join(self.dir, self.file), 'w')
         try:
-            f.write('\n'.join(lines).encode(ENCODING))
+            f.write('\n')
+            for line in lines:
+              f.write(line)
             f.write('\n')
         finally:
             f.close()
