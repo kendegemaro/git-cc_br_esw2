@@ -195,7 +195,7 @@ class Group:
         except:
           debug("miscoded comment")
         with open("./.git/COMMIT_EDITMSG", "wb") as commitmsgfile:
-          commitmsgfile.write(comment)
+          commitmsgfile.write(comment.encode(ENCODING))
           commitmsgfile.close()
         
         try:
