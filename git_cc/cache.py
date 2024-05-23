@@ -4,9 +4,7 @@ from .common import *
 FILE = '.gitcc'
 
 def getCache():
-    if cfg.getCore('cache', True) == 'False':
-        return NoCache()
-    return Cache(GIT_DIR)
+    return NoCache()
 
 class Cache(object):
     def __init__(self, dir):
