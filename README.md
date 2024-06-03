@@ -1,6 +1,6 @@
 # git-cc
 
-Simple bridge between base ClearCase or UCM and Git. Uses python 2.7.
+Simple bridge between base ClearCase or UCM and Git.
 
 ## Fork License disclaimer
 
@@ -8,6 +8,20 @@ This fork of [git-cc](https://github.com/charleso/git-cc) implements fixes for a
 more reliable usage of python encoding, making git-cc functioning in return (for me!).
 It is licensed under the GNU GENERAL PUBLIC LICENSE - please refer to [LICENSE](https://github.com/kendegemaro/git-cc_br_esw2/blob/master/LICENSE) for
 more details.
+
+## Python Software environment
+
+Use this software with a python 2.7.18 Anaconda/Conda environment. To make sure that nothing breaks with an exception, install these packages:
+- bosch-ca v. 1.0
+- ca-certificates v. 2022.10.11
+- certifi v. 2020.6.20
+- pip v. 19.3.1
+- setuptools v. 44.0.0
+- sqlite v. 3.30.1
+- vc v. 9
+- vs2008_runtime v. 9.00.307...
+- wheel v. 0.37.1
+- winvertstore v. 0.2
 
 The following rest of the README is the original text from [git-cc](https://github.com/charleso/git-cc).
 
