@@ -49,14 +49,14 @@ def get_users_module(path):
 
 CFG_CC = 'clearcase'
 CC_DIR = None
-ENCODING = "utf_8"
+ENCODING = "cp1252"
 if hasattr(sys.stdin, 'encoding'):
     ENCODING = sys.stdin.encoding
 if ENCODING is None:
     import locale
     locale_name, ENCODING = locale.getdefaultlocale()
 if ENCODING is None:
-    ENCODING = "ISO8859-1"
+    ENCODING = "cp1252"
 DEBUG = False
 
 def fail(string):

@@ -29,6 +29,8 @@ cache = getCache()
 
 def main(stash=False, dry_run=False, lshistory=False, load=None):
     validateCC()
+    reload(sys)
+    sys.setdefaultencoding('cp1252')
     if not (stash or dry_run or lshistory):
         checkPristine()
 
@@ -195,7 +197,7 @@ class Group:
         except:
           debug("miscoded comment")
         with open("./.git/COMMIT_EDITMSG", "wb") as commitmsgfile:
-          commitmsgfile.write(comment.encode(ENCODING))
+          commitmsgfile.write(comment)
           commitmsgfile.close()
         
         try:
