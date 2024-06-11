@@ -1,6 +1,7 @@
 @echo off
 
 rem setup
+chcp 1252
 call conda activate py27
 @echo conda activate py27
 
