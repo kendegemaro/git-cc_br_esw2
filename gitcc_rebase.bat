@@ -43,6 +43,7 @@ git switch -c %git_branch%_ci
 git switch %git_branch%
 
 rem run gitcc
+@echo.
 @echo --------------- Start of gitcc ---------------
 if exist ./.git/lshistory.bak (
   
