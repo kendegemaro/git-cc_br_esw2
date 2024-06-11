@@ -22,13 +22,14 @@ SET cc_branches=%3
 rem Remove quotation marks, but not from cc_branches variable!
 SET git_branch=%git_branch:"=%
 SET cc_dir=%cc_dir:"=%
+SET cc_branches=%cc_branches:|=^|%
 
 rem write gitcc config
 SET gitcc_file=./.git/gitcc
 >%gitcc_file%  echo [core]
 >>%gitcc_file% echo [%git_branch%]
 >>%gitcc_file% echo clearcase = %cc_dir%
->>%gitcc_file% echo branches = %cc_branches%
+>>%gitcc_file% echo branches = %cc_branches:"=%
 >>%gitcc_file% echo cache = off
 
 rem clear uncommitted git changes(!) and switch to base branch
