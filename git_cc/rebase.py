@@ -199,7 +199,7 @@ class Group:
         try:
             git_exec_silent(['commit', '-F', commitmsgfile.name], env=env)
             try:
-              debug("### COMMITED: " + comment.encode(ENCODING))
+              debug("### COMMITTED: " + comment.encode(ENCODING))
               debug("### ORIGINAL DATE: " + str(getCommitDate(self.date)))
             except:
               debug("### COMMITTED")
