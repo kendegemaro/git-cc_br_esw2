@@ -34,7 +34,7 @@ def main(stash=False, dry_run=False, lshistory=False, load=None):
     if not (stash or dry_run or lshistory):
         checkPristine()
 
-    cc_exec(["update"], errors=False)
+    cc_exec_silent(["update"], errors=False)
 
     since = getSince()
     cache.start()
@@ -192,16 +192,18 @@ class Group:
         env['GIT_AUTHOR_NAME'] = env['GIT_COMMITTER_NAME'] = getUserName(user)
         env['GIT_AUTHOR_EMAIL'] = env['GIT_COMMITTER_EMAIL'] = str(getUserEmail(user))
         comment = self.comment if self.comment.strip() != "" else "<empty message>"
-        try:
-          debug(comment.encode(ENCODING))
-        except:
-          debug("miscoded comment")
         with open("./.git/COMMIT_EDITMSG", "wb") as commitmsgfile:
-          commitmsgfile.write(comment)
+          commitmsgfile.write(comment.encode(ENCODING))
           commitmsgfile.close()
         
         try:
-            git_exec(['commit', '-F', commitmsgfile.name], env=env)
+            git_exec_silent(['commit', '-F', commitmsgfile.name], env=env)
+            try:
+              debug("### COMMITED: " + comment.encode(ENCODING))
+              debug("### ORIGINAL DATE: " + str(getCommitDate(self.date)))
+            except:
+              debug("### COMMITTED")
+              debug("### ORIGINAL DATE: " + str(getCommitDate(self.date)))
         except Exception as e:
             if search('nothing( added)? to commit', e.args[0]) == None:
                 raise
@@ -228,7 +230,7 @@ class Changeset(object):
         mkdirs(toFile)
         removeFile(toFile)
         try:
-            cc_exec(['get','-to', toFile.encode(ENCODING), cc_file(file.encode(ENCODING), version.encode(ENCODING))])
+            cc_exec_silent(['get','-to', toFile.encode(ENCODING), cc_file(file.encode(ENCODING), version.encode(ENCODING))])
         except:
             if len(file) < 200:
                 raise
@@ -242,7 +244,7 @@ class Changeset(object):
 class Uncataloged(Changeset):
     def add(self, files):
         dir = path(cc_file(self.file, self.version))
-        diff = cc_exec(['diff', '-diff_format', '-pred', dir.encode(ENCODING)], errors=False)
+        diff = cc_exec_silent(['diff', '-diff_format', '-pred', dir.encode(ENCODING)], errors=False)
         def getFile(line):
             return join(self.file, line[2:max(line.find('  '), line.find(FS + ' '))])
         for line in diff.split('\n'):
@@ -257,13 +259,13 @@ class Uncataloged(Changeset):
                 cc_added = join(CC_DIR, added)
                 if not exists(cc_added) or isdir(cc_added) or added in files:
                     continue
-                history = cc_exec(['lshistory', '-fmt', '%o%m|%Nd|%Vn\\n', added.encode(ENCODING)], errors=False)
+                history = cc_exec_silent(['lshistory', '-fmt', '%o%m|%Nd|%Vn\\n', added.encode(ENCODING)], errors=False)
                 if not history:
                     continue
                 history = filter(None, history.split('\n'))
                 all_versions = self.parse_history(history)
 
-                date = cc_exec(['describe', '-fmt', '%Nd', dir.encode(ENCODING)])
+                date = cc_exec_silent(['describe', '-fmt', '%Nd', dir.encode(ENCODING)])
                 actual_versions = self.filter_versions(all_versions, lambda x: x[1] < date)
 
                 versions = self.checkin_versions(actual_versions)
