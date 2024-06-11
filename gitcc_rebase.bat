@@ -19,10 +19,9 @@ SET git_branch=%1
 SET cc_dir=%2
 SET cc_branches=%3
 
-rem remove quotation marks, if existing
+rem Remove quotation marks, but not from cc_branches variable!
 SET git_branch=%git_branch:"=%
 SET cc_dir=%cc_dir:"=%
-SET cc_branches=%cc_branches:"=%
 
 rem write gitcc config
 SET gitcc_file=./.git/gitcc
