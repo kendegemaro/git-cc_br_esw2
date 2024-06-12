@@ -57,7 +57,7 @@ START /wait /B gitcc rebase
 @echo.
 git branch -D %git_branch%_cc
 git branch -D %git_branch%_ci
-conda deactivate
+call conda deactivate
 @echo.
 @echo End of batch script. Exiting now.
 exit /B 0
