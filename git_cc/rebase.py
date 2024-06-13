@@ -99,7 +99,6 @@ def filterBranches(version, all=False):
         branches.extend(cfg.getExtraBranches())
     for branch in branches:
         if fnmatch(version, branch):
-            # debug(branch.encode(ENCODING))
             return True
     return False
 
