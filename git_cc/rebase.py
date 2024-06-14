@@ -8,7 +8,6 @@ from fnmatch import fnmatch
 from .clearcase import cc
 from .cache import getCache, CCFile
 from re import search
-import re
 import codecs
 
 """
@@ -49,6 +48,7 @@ def main(stash=False, dry_run=False, lshistory=False, load=None):
         print(history)
     else:
         cs = parseHistory(history)
+        cs = reversed(cs)
         cs = mergeHistory(cs)
         if dry_run:
             return printGroups(cs)
@@ -104,8 +104,6 @@ def filterBranches(version, all=False):
 
 def parseHistory(lines):
     changesets = []
-    branchedFilesDictionary = {}
-    branches = cfg.getBranches()
     def add(split, comment):
         if not split:
             return
@@ -114,31 +112,14 @@ def parseHistory(lines):
             cs = TYPES[cstype](split, comment)
             try:
                 if filterBranches(cs.version):
-                    # Careful: Double escape for the backslash, once for Python and 
-                    #          once for RegEx. This results in "\\\\" to match "\"
-                    ccbranch = re.sub("^\\\\", "", cs.version)  # e.g. "\A\B\42" --> "A\B\42"
-                    ccbranch = re.sub("\\\\\d+$", "", ccbranch) # e.g. "A\B\42"  --> "A\B"
-                    ccbranch = re.sub("^.+\\\\", "", ccbranch)  # e.g. "A\B"     --> "B"
-                    if not cs.file in branchedFilesDictionary:
-                        branchedFilesDictionary[cs.file] = ccbranch
-                        changesets.append(cs)
-                    else:
-                        if ccbranch == branchedFilesDictionary[cs.file]:
-                            branchedFilesDictionary[cs.file] = ccbranch
-                            changesets.append(cs)
-                        else:
-                            dictBranchIndex = branches.index(branchedFilesDictionary[cs.file])
-                            newBranchIndex = branches.index(ccbranch)
-                            if newBranchIndex > dictBranchIndex:
-                                branchedFilesDictionary[cs.file] = ccbranch
-                                changesets.append(cs)   
+                        changesets.append(cs)  
                                 
             except Exception as e:
                 print('Bad line', split, comment)
                 raise
     last = None
     comment = None
-    for line in reversed(lines.splitlines()):
+    for line in lines.splitlines():
         split = line.split(DELIM)
         if len(split) < 6 and last:
             # Cope with comments with '|' character in them
@@ -148,7 +129,6 @@ def parseHistory(lines):
             comment = DELIM.join(split[5:])
             last = split
     add(last, comment)
-     
     return changesets
 
 def mergeHistory(changesets):
