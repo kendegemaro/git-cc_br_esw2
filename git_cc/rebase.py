@@ -112,7 +112,8 @@ def parseHistory(lines):
             cs = TYPES[cstype](split, comment)
             try:
                 if filterBranches(cs.version):
-                    changesets.append(cs)
+                        changesets.append(cs)  
+                                
             except Exception as e:
                 print('Bad line', split, comment)
                 raise
