@@ -66,7 +66,7 @@ exit /B 0
 @echo.
 @echo Usage: gitcc_rebase.bat [git branch] [CC VOB path] [CC branch(es)]
 @echo        [git branch]:    Target git branch name
-@echo        [CC VOB branch]: Original (absolute!) ClearCase VOB path
+@echo        [CC VOB path]:   Original (absolute!) ClearCase VOB path
 @echo        [CC branch(es)]: String of all ClearCase branches to be rebased,  
 @echo                         seperated by "|". Example: "main|syb_3_0|tp_3dff_ble4"
 goto :error
