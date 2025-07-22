@@ -14,9 +14,6 @@ more details.
 Use this software with a python 2.7.18 Anaconda/Conda environment. Call it "py27" or adjust the environment name in the batch script. 
 
 To make sure that nothing breaks with an exception, install these python packages:
-- bosch-ca v. 1.0
-- ca-certificates v. 2022.10.11
-- certifi v. 2020.6.20
 - pip v. 19.3.1
 - setuptools v. 44.0.0
 - sqlite v. 3.30.1
